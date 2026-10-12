@@ -25,7 +25,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $source = 'https://raw.githubusercontent.com/WayneXXDD/Combo/plugin-repo/pluginmaster.json'
+          $source = 'https://raw.githubusercontent.com/WayneXXDD/Combo/plugin-repo/build-manifest.json'
           $text = (Invoke-WebRequest -Uri $source).Content
           $entries = @($text | ConvertFrom-Json)
           if ($entries.Count -ne 2 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'Oracle,XIVComboExpandedest')) {

@@ -16,4 +16,4 @@ After pushing a Combo update, its build workflow publishes both plugins. After a
 
 Increase numeric assembly versions when releasing plugin code changes so Dalamud can detect updates. The original internal names are retained for configuration compatibility.
 
-The existing Combo repository URL continues to work.
+Use the DalamudPlugins index URL above. The legacy Combo pluginmaster.json URL has been removed.
