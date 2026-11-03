@@ -24,12 +24,20 @@ foreach ($entry in $entries) {
         default { 'Combo' }
     }
     $expected = "https://raw.githubusercontent.com/WayneXXDD/$repository/plugin-repo/plugins/$($entry.InternalName)/latest.zip"
-    foreach ($key in @('DownloadLinkInstall','DownloadLinkUpdate','DownloadLinkTesting')) {
+    $downloadKeys = @('DownloadLinkInstall','DownloadLinkUpdate')
+    if ($entry.InternalName -ne 'RaidBuffOff') { $downloadKeys += 'DownloadLinkTesting' }
+    foreach ($key in $downloadKeys) {
         if ($entry.$key -ne $expected) { throw "Unexpected download URL for $($entry.InternalName)." }
     }
-    if ($entry.InternalName -in @('NativeChatTabs','GuildhestQueue','RaidBuffOff')) {
+    if ($entry.InternalName -in @('NativeChatTabs','GuildhestQueue')) {
         if (-not $entry.IsTestingExclusive -or [int]$entry.TestingDalamudApiLevel -ne [int]$entry.DalamudApiLevel -or
             [version]$entry.TestingAssemblyVersion -ne [version]$entry.AssemblyVersion) { throw "Testing metadata is invalid for $($entry.InternalName)." }
+    }
+    if ($entry.InternalName -eq 'RaidBuffOff') {
+        if ($entry.IsTestingExclusive -or $entry.Name -match 'Testing' -or
+            @($entry.PSObject.Properties.Name | Where-Object { $_ -in @('TestingAssemblyVersion','TestingDalamudApiLevel','DownloadLinkTesting') }).Count -ne 0) {
+            throw 'Raid Buff Off must use stable-channel metadata.'
+        }
     }
 }
 $path = Join-Path $env:GITHUB_WORKSPACE 'pluginmaster.json'
