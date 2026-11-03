@@ -8,7 +8,7 @@ https://raw.githubusercontent.com/WayneXXDD/DalamudPlugins/main/pluginmaster.jso
 
 Then use `/xlplugins` to install **XIV Combo Expandedest (Wayne)** or **Oracle (Wayne)**.
 
-**Raid Buff Off (Wayne, Testing)** cancels selected buffs on your character only while the master switch is ON, the current duty/territory is checked, and you are in combat. DTR left-click toggles ON/OFF; right-click opens buff and area checkbox settings. Defaults to OFF with empty selections. Enable **Get plugin testing builds**, refresh the installer, and search **Raid Buff Off**. Use `/rbo` for settings. In-game interaction and cancellation behavior require testing.
+**Raid Buff Off (Wayne, Testing)** cancels selected PvE raid buffs in checked Ultimate raids during combat. Buffs are grouped by job and include AST's The Balance and The Spear. The area list contains only the seven Ultimates. The DTR entry is `raidbuff`: left-click toggles ON/OFF; right-click opens settings. Defaults to OFF with empty selections. Enable **Get plugin testing builds**, refresh the installer, and search **Raid Buff Off**. Use `/rbo` for settings. The game validates each cancellation; in-game behavior still requires testing.
 
 **Guildhest Queue (Wayne, Testing)** automatically queues for a selected guildhest or Guildhests roulette, confirms entry, and optionally leaves after completion before repeating. Combat remains manual. Enable **Get plugin testing builds**, refresh the installer, and search **Guildhest Queue**. Use `/ghq` to select content and start or stop. It has no dependency on CBT, Yes Already, AutoDuty, or other plugins; the game loop still requires in-game testing.
 
