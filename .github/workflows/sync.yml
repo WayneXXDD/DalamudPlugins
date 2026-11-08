@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/sync.yml'
       - '.github/scripts/Sync-PluginIndex.ps1'
+      - '.github/scripts/Validate-ExternalPlugin.ps1'
 
 permissions:
   contents: write
@@ -22,6 +23,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate PowerShell scripts
+        shell: pwsh
+        run: |
+          Get-ChildItem .github/scripts/*.ps1 | ForEach-Object {
+            $parseErrors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$null, [ref]$parseErrors)
+            if ($parseErrors) { throw ($parseErrors | Out-String) }
+          }
       - name: Download and validate plugin index
         shell: pwsh
         run: |

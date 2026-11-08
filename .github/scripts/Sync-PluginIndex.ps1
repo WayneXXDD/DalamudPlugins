@@ -5,18 +5,24 @@ $comboUrl = 'https://raw.githubusercontent.com/WayneXXDD/Combo/plugin-repo/build
 $nativeUrl = 'https://raw.githubusercontent.com/WayneXXDD/NativeChatTabs/plugin-repo/build-manifest.json'
 $guildhestUrl = 'https://raw.githubusercontent.com/WayneXXDD/GuildhestQueue/plugin-repo/build-manifest.json'
 $buffOffUrl = 'https://raw.githubusercontent.com/WayneXXDD/RaidBuffOff/plugin-repo/build-manifest.json'
+$huntingUrl = 'https://raw.githubusercontent.com/WayneXXDD/AutomaticHunting-/main/AutomaticHunting.json'
 $combo = @((Invoke-WebRequest -Uri $comboUrl).Content | ConvertFrom-Json)
 $native = @((Invoke-WebRequest -Uri $nativeUrl).Content | ConvertFrom-Json)
 $guildhest = @((Invoke-WebRequest -Uri $guildhestUrl).Content | ConvertFrom-Json)
 $buffOff = @((Invoke-WebRequest -Uri $buffOffUrl).Content | ConvertFrom-Json)
+$hunting = @((Invoke-WebRequest -Uri $huntingUrl).Content | ConvertFrom-Json)
+if ($hunting.Count -ne 1 -or $hunting[0].InternalName -ne 'AutomaticHunting') { throw 'Expected AutomaticHunting.' }
+$hunting[0].Description = [string]$hunting[0].Description + '（原作者標示適用中國服 XIVLauncherCN；國際服相容性未驗證。）'
+& (Join-Path $PSScriptRoot 'Validate-ExternalPlugin.ps1') -Manifest $hunting[0]
 if ($combo.Count -ne 2 -or ((@($combo.InternalName | Sort-Object) -join ',') -ne 'Oracle,XIVComboExpandedest')) { throw 'Expected Combo and Oracle.' }
 if ($native.Count -ne 1 -or $native[0].InternalName -ne 'NativeChatTabs') { throw 'Expected Native Chat Tabs.' }
 if ($guildhest.Count -ne 1 -or $guildhest[0].InternalName -ne 'GuildhestQueue') { throw 'Expected Guildhest Queue.' }
 if ($buffOff.Count -ne 1 -or $buffOff[0].InternalName -ne 'RaidBuffOff') { throw 'Expected Raid Buff Off.' }
-$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) | Sort-Object InternalName)
-if ($entries.Count -ne 5 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
+$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) + @($hunting) | Sort-Object InternalName)
+if ($entries.Count -ne 6 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'AutomaticHunting,GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
 foreach ($entry in $entries) {
     if ([version]$entry.AssemblyVersion -le [version]'0.0.0.0' -or [int]$entry.DalamudApiLevel -le 0) { throw 'Invalid version or API level.' }
+    if ($entry.InternalName -eq 'AutomaticHunting') { continue } # Verified against the upstream release and ZIP above.
     $repository = switch ($entry.InternalName) {
         'NativeChatTabs' { 'NativeChatTabs' }
         'GuildhestQueue' { 'GuildhestQueue' }
