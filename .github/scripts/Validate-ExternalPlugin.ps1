@@ -3,14 +3,16 @@ param([Parameter(Mandatory)] [psobject] $Manifest)
 $ErrorActionPreference = 'Stop'
 if ($Manifest.InternalName -cne 'AutomaticHunting' -or $Manifest.Author -cne 'SFY') { throw 'Unexpected upstream plugin identity.' }
 $version = [version]$Manifest.AssemblyVersion
-if ($version -le [version]'0.0.0.0') { throw 'Invalid AutomaticHunting version.' }
-$tag = 'AutomaticHunting-' + $Manifest.AssemblyVersion
-$url = "https://github.com/Whswa-river/River/releases/download/$tag/AutomaticHunting.zip"
+if ($version -lt [version]'2.4.5.1') { throw 'Expected the Global port version.' }
+if ($Manifest.RepoUrl -cne 'https://github.com/WayneXXDD/AutomaticHuntingGlobal' -or [int]$Manifest.DalamudApiLevel -ne 15) { throw 'Expected the Global build repository and API level.' }
+if (-not $Manifest.IsTestingExclusive -or [version]$Manifest.TestingAssemblyVersion -ne $version -or [int]$Manifest.TestingDalamudApiLevel -ne 15) { throw 'Expected Global testing-channel metadata.' }
+$tag = 'v' + $Manifest.AssemblyVersion
+$url = "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/$tag/AutomaticHunting.zip"
 foreach ($key in @('DownloadLinkInstall','DownloadLinkUpdate','DownloadLinkTesting')) {
     if ($Manifest.$key -cne $url) { throw "Unexpected AutomaticHunting $key." }
 }
 $headers = @{ 'Accept' = 'application/vnd.github+json'; 'User-Agent' = 'WayneXXDD-DalamudPlugins' }
-$release = Invoke-RestMethod -Uri "https://api.github.com/repos/Whswa-river/River/releases/tags/$tag" -Headers $headers
+$release = Invoke-RestMethod -Uri "https://api.github.com/repos/WayneXXDD/AutomaticHuntingGlobal/releases/tags/$tag" -Headers $headers
 if ($release.draft -or $release.prerelease -or $release.tag_name -cne $tag) { throw 'Expected a published stable upstream release.' }
 $assets = @($release.assets | Where-Object { $_.name -ceq 'AutomaticHunting.zip' })
 if ($assets.Count -ne 1 -or $assets[0].browser_download_url -cne $url) { throw 'Missing or mismatched upstream ZIP.' }
