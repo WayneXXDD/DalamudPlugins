@@ -1,26 +1,27 @@
 [
   {
     "Author": "SFY",
-    "Name": "AutomaticHunting Global",
+    "Name": "自動狩獵跟車（國際服）",
     "InternalName": "AutomaticHunting",
-    "Description": "Global 國際服狩獵跟車。從 SFY 的 AutomaticHunting 2.4.5.0 還原並移植；使用 vnavmesh 導航、Lifestream 跨服與切線。此版本尚待遊戲內驗證。",
-    "Punchline": "Global 狩獵跟車",
-    "AssemblyVersion": "2.4.5.1",
-    "TestingAssemblyVersion": "2.4.5.1",
+    "Description": "繁體中文介面的國際服狩獵跟車插件，附繁體中文字型與地圖、怪物、坐騎名稱譯文。使用 vnavmesh 導航，透過 Lifestream 跨服與切換分流；此版本尚待遊戲內實測。",
+    "Punchline": "繁體中文狩獵跟車",
+    "AssemblyVersion": "2.4.5.2",
+    "TestingAssemblyVersion": "2.4.5.2",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 15,
     "TestingDalamudApiLevel": 15,
     "IsTestingExclusive": true,
     "RepoUrl": "https://github.com/WayneXXDD/AutomaticHuntingGlobal",
     "Tags": [
-      "hunt",
-      "navigation",
-      "Global"
+      "狩獵",
+      "跟車",
+      "國際服",
+      "繁體中文"
     ],
     "IconUrl": "https://raw.githubusercontent.com/Whswa-river/River/main/AutomaticHunting/icon.png",
-    "DownloadLinkInstall": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.1/AutomaticHunting.zip",
-    "DownloadLinkUpdate": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.1/AutomaticHunting.zip",
-    "DownloadLinkTesting": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.1/AutomaticHunting.zip"
+    "DownloadLinkInstall": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.2/AutomaticHunting.zip",
+    "DownloadLinkUpdate": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.2/AutomaticHunting.zip",
+    "DownloadLinkTesting": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.4.5.2/AutomaticHunting.zip"
   },
   {
     "Author": "WayneXXDD",
