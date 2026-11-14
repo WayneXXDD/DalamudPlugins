@@ -12,7 +12,7 @@ $guildhest = @((Invoke-WebRequest -Uri $guildhestUrl).Content | ConvertFrom-Json
 $buffOff = @((Invoke-WebRequest -Uri $buffOffUrl).Content | ConvertFrom-Json)
 $hunting = @((Invoke-WebRequest -Uri $huntingUrl).Content | ConvertFrom-Json)
 if ($hunting.Count -ne 1 -or $hunting[0].InternalName -ne 'AutomaticHunting') { throw 'Expected AutomaticHunting.' }
-if ($hunting[0].Name -cne '自動狩獵跟車（國際服）' -or [version]$hunting[0].AssemblyVersion -lt [version]'2.4.5.2') { throw 'Expected the Traditional Chinese Global build.' }
+if ($hunting[0].Name -cne 'AutomaticHunting Global' -or [version]$hunting[0].AssemblyVersion -lt [version]'2.4.5.3') { throw 'Expected the WayneXXDD Global build.' }
 & (Join-Path $PSScriptRoot 'Validate-ExternalPlugin.ps1') -Manifest $hunting[0]
 if ($combo.Count -ne 2 -or ((@($combo.InternalName | Sort-Object) -join ',') -ne 'Oracle,XIVComboExpandedest')) { throw 'Expected Combo and Oracle.' }
 if ($native.Count -ne 1 -or $native[0].InternalName -ne 'NativeChatTabs') { throw 'Expected Native Chat Tabs.' }

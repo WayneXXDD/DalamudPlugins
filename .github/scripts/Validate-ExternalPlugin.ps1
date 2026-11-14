@@ -1,9 +1,9 @@
 [CmdletBinding()]
 param([Parameter(Mandatory)] [psobject] $Manifest)
 $ErrorActionPreference = 'Stop'
-if ($Manifest.InternalName -cne 'AutomaticHunting' -or $Manifest.Author -cne 'SFY') { throw 'Unexpected upstream plugin identity.' }
+if ($Manifest.InternalName -cne 'AutomaticHunting' -or $Manifest.Author -cne 'WayneXXDD') { throw 'Unexpected maintained plugin identity.' }
 $version = [version]$Manifest.AssemblyVersion
-if ($version -lt [version]'2.4.5.1') { throw 'Expected the Global port version.' }
+if ($version -lt [version]'2.4.5.3') { throw 'Expected the Global port version.' }
 if ($Manifest.RepoUrl -cne 'https://github.com/WayneXXDD/AutomaticHuntingGlobal' -or [int]$Manifest.DalamudApiLevel -ne 15) { throw 'Expected the Global build repository and API level.' }
 if (-not $Manifest.IsTestingExclusive -or [version]$Manifest.TestingAssemblyVersion -ne $version -or [int]$Manifest.TestingDalamudApiLevel -ne 15) { throw 'Expected Global testing-channel metadata.' }
 $tag = 'v' + $Manifest.AssemblyVersion
@@ -41,6 +41,7 @@ try {
     $reader = [IO.StreamReader]::new($jsonEntry.Open(), [Text.Encoding]::UTF8, $true)
     try { $inside = $reader.ReadToEnd() | ConvertFrom-Json } finally { $reader.Dispose() }
     if ($inside.InternalName -cne 'AutomaticHunting' -or
+        $inside.Name -cne $Manifest.Name -or $inside.Author -cne $Manifest.Author -or
         [version]$inside.AssemblyVersion -ne $version -or
         [int]$inside.DalamudApiLevel -ne [int]$Manifest.DalamudApiLevel) { throw 'Package manifest identity/version/API differs from the index.' }
     # Read assembly metadata only. Never load or execute the downloaded plugin.
