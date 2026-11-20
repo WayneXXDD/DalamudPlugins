@@ -3,7 +3,7 @@ param([Parameter(Mandatory)] [psobject] $Manifest)
 $ErrorActionPreference = 'Stop'
 if ($Manifest.InternalName -cne 'AutomaticHunting' -or $Manifest.Author -cne 'WayneXXDD') { throw 'Unexpected maintained plugin identity.' }
 $version = [version]$Manifest.AssemblyVersion
-if ($version -lt [version]'2.4.5.7') { throw 'Expected the build containing configurable A-mark search, optional flag teleport, full-name Global conductor matching and embedded startup translation resources.' }
+if ($version -lt [version]'2.4.5.8') { throw 'Expected the build containing party-teleport navigation recovery, configurable A-mark search, optional flag teleport, full-name Global conductor matching and embedded startup translation resources.' }
 if ($Manifest.RepoUrl -cne 'https://github.com/WayneXXDD/AutomaticHuntingGlobal' -or [int]$Manifest.DalamudApiLevel -ne 15) { throw 'Expected the Global build repository and API level.' }
 if (-not $Manifest.IsTestingExclusive -or [version]$Manifest.TestingAssemblyVersion -ne $version -or [int]$Manifest.TestingDalamudApiLevel -ne 15) { throw 'Expected Global testing-channel metadata.' }
 $tag = 'v' + $Manifest.AssemblyVersion
