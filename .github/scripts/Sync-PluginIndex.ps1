@@ -18,11 +18,24 @@ if ($combo.Count -ne 2 -or ((@($combo.InternalName | Sort-Object) -join ',') -ne
 if ($native.Count -ne 1 -or $native[0].InternalName -ne 'NativeChatTabs') { throw 'Expected Native Chat Tabs.' }
 if ($guildhest.Count -ne 1 -or $guildhest[0].InternalName -ne 'GuildhestQueue') { throw 'Expected Guildhest Queue.' }
 if ($buffOff.Count -ne 1 -or $buffOff[0].InternalName -ne 'RaidBuffOff') { throw 'Expected Raid Buff Off.' }
-$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) + @($hunting) | Sort-Object InternalName)
-if ($entries.Count -ne 6 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'AutomaticHunting,GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
+$bmrRelease = Invoke-RestMethod -Uri 'https://api.github.com/repos/WayneXXDD/BossmodRebornCN/releases/latest'
+$bmrVersion = $bmrRelease.tag_name
+if ($bmrRelease.draft -or $bmrRelease.prerelease -or $bmrVersion -notmatch '^\d+\.\d+\.\d+\.\d+$') { throw 'Expected a published version of the BossModReborn fork.' }
+$bmrBase = "https://github.com/WayneXXDD/BossmodRebornCN/releases/download/$bmrVersion"
+$bmrManifests = @($bmrRelease.assets | Where-Object { $_.name -ceq 'BossModReborn.json' -and $_.browser_download_url -ceq "$bmrBase/BossModReborn.json" })
+$bmrPackages = @($bmrRelease.assets | Where-Object { $_.name -ceq 'latest.zip' -and $_.browser_download_url -ceq "$bmrBase/latest.zip" })
+if ($bmrManifests.Count -ne 1 -or $bmrPackages.Count -ne 1 -or $bmrPackages[0].size -le 0) { throw 'BossModReborn release is missing its manifest or package.' }
+$bmrResponse = (Invoke-WebRequest -Uri $bmrManifests[0].browser_download_url).Content
+if ($bmrResponse -is [byte[]]) { $bmrResponse = [Text.Encoding]::UTF8.GetString($bmrResponse) }
+$bmr = $bmrResponse | ConvertFrom-Json
+if ($bmr.InternalName -cne 'BossModReborn' -or $bmr.AssemblyVersion -ne $bmrVersion -or [int]$bmr.DalamudApiLevel -ne 15) { throw 'BossModReborn package identity, version, or API does not match.' }
+if ($bmr.DownloadLinkInstall -cne $bmrPackages[0].browser_download_url -or $bmr.DownloadLinkUpdate -cne $bmrPackages[0].browser_download_url) { throw 'BossModReborn download links do not match its verified release.' }
+$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) + @($hunting) + @($bmr) | Sort-Object InternalName)
+if ($entries.Count -ne 7 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'AutomaticHunting,BossModReborn,GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
 foreach ($entry in $entries) {
     if ([version]$entry.AssemblyVersion -le [version]'0.0.0.0' -or [int]$entry.DalamudApiLevel -le 0) { throw 'Invalid version or API level.' }
     if ($entry.InternalName -eq 'AutomaticHunting') { continue } # Verified against the Global build release and ZIP above.
+    if ($entry.InternalName -ceq 'BossModReborn') { continue } # Version and release asset URLs checked above.
     $repository = switch ($entry.InternalName) {
         'NativeChatTabs' { 'NativeChatTabs' }
         'GuildhestQueue' { 'GuildhestQueue' }
