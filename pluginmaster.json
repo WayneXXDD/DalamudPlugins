@@ -24,6 +24,41 @@
     "DownloadLinkTesting": "https://github.com/WayneXXDD/AutomaticHuntingGlobal/releases/download/v2.5.0.0/AutomaticHunting.zip"
   },
   {
+    "Author": "KanoNoUta",
+    "Name": "BossModReborn 斗兽版本",
+    "InternalName": "BossModReborn",
+    "RepoUrl": "https://github.com/WayneXXDD/BossmodRebornCN",
+    "Description": "支持斗兽自走棋部分线路",
+    "Changelog": "7.5.6.18 將 DTR 的 AI 開關狀態顯示為 AI: On 或 AI: Off。",
+    "ApplicableVersion": "any",
+    "Tags": [
+      "combat",
+      "boss",
+      "dodge",
+      "mechanics",
+      "pve",
+      "raids",
+      "trials"
+    ],
+    "DalamudApiLevel": 15,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "CanUnloadAsync": false,
+    "LoadPriority": 0,
+    "IsTestingExclusive": false,
+    "IconUrl": "https://raw.githubusercontent.com/FFXIV-CombatReborn/RebornAssets/main/IconAssets/BMR_Icon.png",
+    "Punchline": "斗兽奇弈机制提示与自动避让",
+    "AcceptsFeedback": true,
+    "ImageUrls": [
+      "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image1.png",
+      "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image2.png",
+      "https://raw.githubusercontent.com/FFXIV-CombatReborn/BossmodReborn/master/Data/image3.png"
+    ],
+    "AssemblyVersion": "7.5.6.18",
+    "DownloadLinkInstall": "https://github.com/WayneXXDD/BossmodRebornCN/releases/download/7.5.6.18/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/WayneXXDD/BossmodRebornCN/releases/download/7.5.6.18/latest.zip"
+  },
+  {
     "Author": "WayneXXDD",
     "Name": "Guildhest Queue (Wayne, Testing)",
     "InternalName": "GuildhestQueue",
