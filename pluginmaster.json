@@ -162,7 +162,7 @@
     "Author": "WayneXXDD",
     "Name": "Combo Timer (Wayne)",
     "InternalName": "WayneComboTimer",
-    "AssemblyVersion": "1.0.0.2",
+    "AssemblyVersion": "1.0.0.3",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
     "IsTestingExclusive": false,
