@@ -159,6 +159,25 @@
     "DownloadLinkUpdate": "https://raw.githubusercontent.com/WayneXXDD/RaidBuffOff/plugin-repo/plugins/RaidBuffOff/latest.zip"
   },
   {
+    "Author": "WayneXXDD",
+    "Name": "Combo Timer (Wayne)",
+    "InternalName": "WayneComboTimer",
+    "AssemblyVersion": "1.0.0.0",
+    "DalamudApiLevel": 15,
+    "ApplicableVersion": "any",
+    "IsTestingExclusive": false,
+    "Punchline": "Native combo timer with Viper starter highlight duration.",
+    "Description": "Shows the Simple Tweaks-style HUD countdown. In PvE on Viper, shows the remaining Honed Steel or Honed Reavers duration only while its single-target starter is highlighted. Use /waynecombo for settings.",
+    "RepoUrl": "https://github.com/WayneXXDD/ComboTimer",
+    "Tags": [
+      "UI",
+      "jobs",
+      "Viper"
+    ],
+    "DownloadLinkInstall": "https://raw.githubusercontent.com/WayneXXDD/ComboTimer/plugin-repo/plugins/WayneComboTimer/latest.zip",
+    "DownloadLinkUpdate": "https://raw.githubusercontent.com/WayneXXDD/ComboTimer/plugin-repo/plugins/WayneComboTimer/latest.zip"
+  },
+  {
     "Author": "attick, daemitus, alymphocyte, grammernatzi",
     "Name": "XIV Combo Expandedest (Wayne)",
     "InternalName": "XIVComboExpandedest",
