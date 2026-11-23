@@ -5,11 +5,14 @@ $comboUrl = 'https://raw.githubusercontent.com/WayneXXDD/Combo/plugin-repo/build
 $nativeUrl = 'https://raw.githubusercontent.com/WayneXXDD/NativeChatTabs/plugin-repo/build-manifest.json'
 $guildhestUrl = 'https://raw.githubusercontent.com/WayneXXDD/GuildhestQueue/plugin-repo/build-manifest.json'
 $buffOffUrl = 'https://raw.githubusercontent.com/WayneXXDD/RaidBuffOff/plugin-repo/build-manifest.json'
+$timerUrl = 'https://raw.githubusercontent.com/WayneXXDD/ComboTimer/plugin-repo/build-manifest.json'
 $huntingUrl = 'https://raw.githubusercontent.com/WayneXXDD/AutomaticHuntingGlobal/main/AutomaticHunting.json'
 $combo = @((Invoke-WebRequest -Uri $comboUrl).Content | ConvertFrom-Json)
 $native = @((Invoke-WebRequest -Uri $nativeUrl).Content | ConvertFrom-Json)
 $guildhest = @((Invoke-WebRequest -Uri $guildhestUrl).Content | ConvertFrom-Json)
 $buffOff = @((Invoke-WebRequest -Uri $buffOffUrl).Content | ConvertFrom-Json)
+$timer = @((Invoke-WebRequest -Uri $timerUrl).Content | ConvertFrom-Json)
+if ($timer.Count -ne 1 -or $timer[0].InternalName -cne 'WayneComboTimer') { throw 'Expected Combo Timer.' }
 $hunting = @((Invoke-WebRequest -Uri $huntingUrl).Content | ConvertFrom-Json)
 if ($hunting.Count -ne 1 -or $hunting[0].InternalName -ne 'AutomaticHunting') { throw 'Expected AutomaticHunting.' }
 if ($hunting[0].Name -cne 'AutomaticHunting Global' -or [version]$hunting[0].AssemblyVersion -lt [version]'2.4.5.3') { throw 'Expected the WayneXXDD Global build.' }
@@ -30,8 +33,8 @@ if ($bmrResponse -is [byte[]]) { $bmrResponse = [Text.Encoding]::UTF8.GetString(
 $bmr = $bmrResponse | ConvertFrom-Json
 if ($bmr.InternalName -cne 'BossModReborn' -or $bmr.AssemblyVersion -ne $bmrVersion -or [int]$bmr.DalamudApiLevel -ne 15) { throw 'BossModReborn package identity, version, or API does not match.' }
 if ($bmr.DownloadLinkInstall -cne $bmrPackages[0].browser_download_url -or $bmr.DownloadLinkUpdate -cne $bmrPackages[0].browser_download_url) { throw 'BossModReborn download links do not match its verified release.' }
-$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) + @($hunting) + @($bmr) | Sort-Object InternalName)
-if ($entries.Count -ne 7 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'AutomaticHunting,BossModReborn,GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
+$entries = @(@($combo) + @($native) + @($guildhest) + @($buffOff) + @($hunting) + @($bmr) + @($timer) | Sort-Object InternalName)
+if ($entries.Count -ne 8 -or ((@($entries.InternalName | Sort-Object) -join ',') -ne 'AutomaticHunting,BossModReborn,GuildhestQueue,NativeChatTabs,Oracle,RaidBuffOff,WayneComboTimer,XIVComboExpandedest')) { throw 'Plugin index is incomplete or duplicated.' }
 foreach ($entry in $entries) {
     if ([version]$entry.AssemblyVersion -le [version]'0.0.0.0' -or [int]$entry.DalamudApiLevel -le 0) { throw 'Invalid version or API level.' }
     if ($entry.InternalName -eq 'AutomaticHunting') { continue } # Verified against the Global build release and ZIP above.
@@ -40,11 +43,12 @@ foreach ($entry in $entries) {
         'NativeChatTabs' { 'NativeChatTabs' }
         'GuildhestQueue' { 'GuildhestQueue' }
         'RaidBuffOff' { 'RaidBuffOff' }
+        'WayneComboTimer' { 'ComboTimer' }
         default { 'Combo' }
     }
     $expected = "https://raw.githubusercontent.com/WayneXXDD/$repository/plugin-repo/plugins/$($entry.InternalName)/latest.zip"
     $downloadKeys = @('DownloadLinkInstall','DownloadLinkUpdate')
-    if ($entry.InternalName -ne 'RaidBuffOff') { $downloadKeys += 'DownloadLinkTesting' }
+    if ($entry.InternalName -notin @('RaidBuffOff','WayneComboTimer')) { $downloadKeys += 'DownloadLinkTesting' }
     foreach ($key in $downloadKeys) {
         if ($entry.$key -ne $expected) { throw "Unexpected download URL for $($entry.InternalName)." }
     }
@@ -52,10 +56,10 @@ foreach ($entry in $entries) {
         if (-not $entry.IsTestingExclusive -or [int]$entry.TestingDalamudApiLevel -ne [int]$entry.DalamudApiLevel -or
             [version]$entry.TestingAssemblyVersion -ne [version]$entry.AssemblyVersion) { throw "Testing metadata is invalid for $($entry.InternalName)." }
     }
-    if ($entry.InternalName -eq 'RaidBuffOff') {
+    if ($entry.InternalName -in @('RaidBuffOff','WayneComboTimer')) {
         if ($entry.IsTestingExclusive -or $entry.Name -match 'Testing' -or
             @($entry.PSObject.Properties.Name | Where-Object { $_ -in @('TestingAssemblyVersion','TestingDalamudApiLevel','DownloadLinkTesting') }).Count -ne 0) {
-            throw 'Raid Buff Off must use stable-channel metadata.'
+            throw "$($entry.InternalName) must use stable-channel metadata."
         }
     }
 }
