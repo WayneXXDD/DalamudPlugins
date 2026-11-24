@@ -162,17 +162,20 @@
     "Author": "WayneXXDD",
     "Name": "Combo Timer (Wayne)",
     "InternalName": "WayneComboTimer",
-    "AssemblyVersion": "1.0.0.4",
+    "AssemblyVersion": "1.1.0.0",
     "DalamudApiLevel": 15,
     "ApplicableVersion": "any",
     "IsTestingExclusive": false,
-    "Punchline": "Native combo timer with continuous Viper enhancement duration.",
-    "Description": "Shows the Simple Tweaks-style HUD countdown. In PvE on Viper, continuously shows the remaining Honed Steel or Honed Reavers duration through all combo steps, including while the starter's highlight is hidden. Use /waynecombo for settings.",
+    "Punchline": "Combo countdown, enemy information, distance, FPS and ping in one plugin.",
+    "Description": "Seven independently switchable modules: combo timer, enemy-list HP, enemy-list statuses, target distance, personal target-status enlargement, FPS and ping. Existing settings are imported automatically on the first upgrade, including saved Ping window positions. Open /waynecombo for settings.",
     "RepoUrl": "https://github.com/WayneXXDD/ComboTimer",
     "Tags": [
       "UI",
       "jobs",
-      "Viper"
+      "Viper",
+      "distance",
+      "FPS",
+      "ping"
     ],
     "DownloadLinkInstall": "https://raw.githubusercontent.com/WayneXXDD/ComboTimer/plugin-repo/plugins/WayneComboTimer/latest.zip",
     "DownloadLinkUpdate": "https://raw.githubusercontent.com/WayneXXDD/ComboTimer/plugin-repo/plugins/WayneComboTimer/latest.zip"
